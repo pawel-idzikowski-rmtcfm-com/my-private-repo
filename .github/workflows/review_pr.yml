@@ -1,0 +1,23 @@
+name: Review PR
+
+on:
+    pull_request:
+        types:
+            - opened
+
+jobs:
+    reviewOpenedPull:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+              with:
+                  repository: 'trolit/Patchron'
+                  ref: 'master'
+
+            - run: npm ci --only=production
+
+            - run: npm start
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # or secrets.PAT
+                  NODE_ENV: 'production'
+                  # available options: https://github.com/trolit/Patchron#2-configuration
